@@ -2,7 +2,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/
 import { createTRPCClient } from "@trpc/client";
 import { z } from "zod";
 
-
+//////////////resolve bug //////
 export const projectRouter = createTRPCRouter({
     createProject: protectedProcedure.input(
         z.object({
