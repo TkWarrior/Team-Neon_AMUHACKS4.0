@@ -100,5 +100,3 @@ This project is a fully-featured AI-powered GitHub Developer Tool built with **N
 
 ## Conclusion
 By the end of this project, you will have built a powerful AI-driven tool that enhances GitHub repository management and developer productivity. With the use of Next.js 15, NeonDB, Shadcn, Clerk, and GitHub APIs, you will create an interactive and seamless user experience that can be deployed to Vercel.
-
-Good luck with your hackathon project!
