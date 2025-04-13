@@ -1,15 +1,16 @@
-
+import  {Document} from "@langchain/core/documents"
 import {GoogleGenerativeAI} from '@google/generative-ai';
+import { Code } from "lucide-react";
 
 const genAI = new GoogleGenerativeAI(
-    process.env.GEMINI_API_KEY
+    process.env.GEMINI_API_KEY!
 )
 const model = genAI.getGenerativeModel({
     model : 'gemini-1.5-flash'
 }
 )
 
-    
+    //@ts-ignore
 export const aiSummariseCommit = async(diff) => {
     const response = await model.generateContent([
         `Reminders about the git diff format 
@@ -42,4 +43,23 @@ export const aiSummariseCommit = async(diff) => {
 
         , `Please summarise the following diff file: \n\n${diff}`]);
         return response.response.text();
+    }
+
+    export async function summariseCode(doc  : Document) {
+        console.log("Getting summary for ", doc.metadata.source)
+        const summary = await aiSummariseCommit(doc.pageContent) 
+        const response = await model.generateContent([
+            `you are an intelligent senior engineer who specialises in onboarding junior software engineer onto projects`,
+            `you are onboarding a junior software engineer and explaining to them the purposes of the ${doc.metadata.source} file 
+             Here is the code: 
+             ~~~~
+
+            ${Code}
+
+             ~~~~
+
+             `
+        ])
+        return response.response.text()  
+        
     }

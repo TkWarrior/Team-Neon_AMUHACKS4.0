@@ -2,14 +2,14 @@
 "use client"
 
 import React from 'react'
-import {useProject} from '@/hooks/use-project'
 import Link from 'next/link'
 import { ExternalLink } from 'lucide-react'
 import {api} from '@/trpc/react'
 import { cn } from '@/lib/utils'
-import { useProject } from '@/hooks/use-project'
+import useProject from '@/hooks/use-project'
+
 const CommitLog= () => {
-  const [projectId] = useProject()
+  const {projectId, project} = useProject()
   const {data: commits} = api.project.getCommits.useQuery({ projectId })
   return (
    <>
@@ -25,7 +25,7 @@ const CommitLog= () => {
                         </div>
                         
                         <>
-                            <img src={commit.commitAuthorAvatar} alt='commit avatar' classname='relative mt-4 size-8 flex-none rounded-full bg-gray-60'/>
+                            <img src={commit.commitAuthorAvatar} alt='commit avatar' className='relative mt-4 size-8 flex-none rounded-full bg-gray-60'/>
                             <div className='flex-auto rounded-md bg-white p-3 ring-1 ring-inset ring-gray-200'>
                                 <div className='flex justify-between gap-x-4'>
                                     <Link target = '_blank' href = {`${project?.githubUrl}/commits/${commit.commitHash}`} className='py-0.5 text-xs leading-5 text-gray-600'>

@@ -2,6 +2,7 @@ import {Octokit } from 'octokit';
 import axios from "axios"
 import { headers } from 'next/headers';
 import { aiSummariseCommit } from './gemini';
+import { db } from '@/server/db';
 export const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 });
@@ -39,10 +40,13 @@ export const getCommitHashes = async (githubUrl: string): Promise<Response[]> =>
 export const pollCommits = async(projectId:string) => {
     const {project,githubUrl} = await fetchProjectGithubUrl(projectId)
     const commitHashes = await getCommitHashes(githubUrl)
+            // @ts-ignore
     const unprocessedCommits = await filterUnprocessCommits(projectId,commitHashes)
+            // @ts-ignore
     const summaryResponses = await Promise.allSettled(unprocessedCommits.map(commit => {
         return summariseCommit(githubUrl,commit.commitHash)
     }))
+            // @ts-ignore
     const summaries = summaryResponses.map((response) => {
         if(response.status === 'fulfilled'){
             return response.value as string
@@ -50,6 +54,7 @@ export const pollCommits = async(projectId:string) => {
         return ""
     })
     const commits = await db.commit.createMany({
+        // @ts-ignore
     data: summaries.map((summary,index) => {
         console.log(`processing commit ${index}`)
         return {
@@ -58,7 +63,7 @@ export const pollCommits = async(projectId:string) => {
             commitMessage:unprocessedCommits[index]!.commitMessage,
             commitAuthorName: unprocessedCommits[index]!.commitAuthorName,
             commitAuthorAvatar:unprocessedCommits[index]!.commitAuthorAvatar,
-            commitDate:unprocessedCommits[index]!.commiteDate,
+            commitDate:unprocessedCommits[index]!.commitDate,
             summary
 
             }
@@ -67,7 +72,7 @@ export const pollCommits = async(projectId:string) => {
     return commits
 }   
 
-return
+// return
 //used to summarize the commits 
 async function summariseCommit(githubUrl:string,commitHash:string){
     const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`,{
@@ -82,7 +87,7 @@ async function fetchProjectGithubUrl(projectId:string){
     const project = await db.project.findUnique({
         where: {id : projectId},
         select : {
-            githubUrl = true
+            githubUrl : true
         }
     })
     if(!project?.githubUrl){
@@ -91,7 +96,7 @@ async function fetchProjectGithubUrl(projectId:string){
     return {project,githubUrl:project.githubUrl}
 }
 
-async function filterUprocessCommits(projectId:string,commitHashes:Response[]){
+async function filterUnprocessCommits(projectId:string,commitHashes:Response[]){
     const processedCommits = await db.commit.findMany({
         where: { projectId }
     })

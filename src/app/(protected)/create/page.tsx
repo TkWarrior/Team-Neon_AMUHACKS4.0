@@ -58,9 +58,9 @@ const CreatePage = () => {
             <div className='h-4'></div>
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Input {...register('repoUrl' ,{ required: true })} placeholder="Project Name" required />
+                    <Input {...register('projectName' ,{ required: true })} placeholder="Project Name" required />
                     <div className='h-2'></div>
-                    <Input {...register('projectName' ,{ required: true })} placeholder="Github URL " required  type='url'/>
+                    <Input {...register('repoUrl' ,{ required: true })} placeholder="Github URL " required  type='url'/>
                     <div className='h-2'></div>
                     <Input {...register('githubToken' ,{ required: true })} placeholder="Github Token (Opetional)"  />
                     <div className='h-4'></div>

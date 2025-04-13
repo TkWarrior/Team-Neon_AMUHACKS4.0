@@ -1,10 +1,11 @@
 "use client"
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
-import { useProject } from "@clerk/nextjs";
+
 import { ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import  CommitLog  from "./commit-log";
+import useProject from "@/hooks/use-project";
 const DashboardPage = () => {
   const { project } = useProject();
   return (
