@@ -4,6 +4,8 @@ import { createTRPCClient } from "@trpc/client";
 import { error } from "console";
 import { z } from "zod";
 
+
+//////////////////  Bug cause by this reslove /////////////////
 export const projectRouter = createTRPCRouter({
     createProject: protectedProcedure.input(
         z.object({
