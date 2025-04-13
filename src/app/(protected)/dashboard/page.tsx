@@ -1,10 +1,12 @@
+"use client"
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
-
-export default function DashboardPage() {
+import { useUser } from "@clerk/nextjs";
+const  DashboardPage = () => {
+  const {user} = useUser();
   return (
     <>
       <SignedIn>
-        <div className="text-black p-8">Welcome to the Dashboard 🚀</div>
+        <div>{user?.firstName}</div>
       </SignedIn>
       <SignedOut>
         <RedirectToSignIn />
@@ -12,3 +14,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
+export default DashboardPage

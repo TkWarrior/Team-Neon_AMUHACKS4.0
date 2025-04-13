@@ -1,53 +1,44 @@
+/* eslint-disable @next/next/no-async-client-component */
+"use client"
 import Link from "next/link";
 
 import { LatestPost } from "@/app/_components/post";
 import { api, HydrateClient } from "@/trpc/server";
+import { Button } from "@/components/ui/button";
+import Spline from '@splinetool/react-spline'
+import { useRouter } from "next/navigation";
+export default function Home() {
+  const router = useRouter();
+  const handleGetStarted = () => {
+      router.push("/get-started");
+  }
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  void api.post.getLatest.prefetch();
-
-  return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
+  return  (<div className="min-h-screen bg-black text-white overflow-hidden">
+        <div className="grid lg:grid-cols-2 items-center max-w-7xl mx-auto px-6 py-12 gap-10">
+          {/* Left Section */}
+          <div
+            className="space-y-8 backdrop-blur-sm bg-white/5 p-8 rounded-2xl shadow-xl"
+            
+          >
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+              Analyze Your<span className="text-blue-400">Repo </span> Like a 
+              Pro
+            </h1>
+            <p className="text-lg text-gray-300 max-w-md">
+              Work together in real-time with syntax highlighting, version
+              control, and more — all inside one powerful, beautiful editor.
             </p>
+            <button onClick = {handleGetStarted} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300">
+              Get Started
+            </button>
           </div>
-
-          <LatestPost />
+  
+          {/* Right Section - Spline Model */}
+          <div
+            className="h-[500px] md:h-[600px] w-full"
+          >
+            <Spline scene="https://prod.spline.design/858qRsXHwgE20qu7/scene.splinecode" />
+          </div>
         </div>
-      </main>
-    </HydrateClient>
-  );
+      </div>)
 }
