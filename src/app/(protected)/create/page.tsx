@@ -1,8 +1,10 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { api } from '@/trpc/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 
 
@@ -16,8 +18,25 @@ type FormInput = {
 const CreatePage = () => {
     const { register, handleSubmit, reset}= useForm<FormInput>() 
 
+    const createProject = api.project.createProject.useMutation() 
+
     function onSubmit(data : FormInput){
         window.alert(JSON.stringify(data, null, 2)) 
+        createProject.mutate({
+            githubUrl: data.repoUrl, 
+            name: data.projectName, 
+            githubToken: data.githubToken
+        },{
+            onSuccess: ()=>{
+                toast.success('Project Created Successfully')
+                reset() 
+            },
+            onError:()=>{
+                toast.error('Failed to Create Project ')
+            }
+        }
+    
+    )
         return true 
     }
   return (
@@ -38,11 +57,11 @@ const CreatePage = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input {...register('repoUrl' ,{ required: true })} placeholder="Project Name" required />
                     <div className='h-2'></div>
-                    <Input {...register('repoUrl' ,{ required: true })} placeholder="Github URL " required  type='url'/>
+                    <Input {...register('projectName' ,{ required: true })} placeholder="Github URL " required  type='url'/>
                     <div className='h-2'></div>
-                    <Input {...register('repoUrl' ,{ required: true })} placeholder="Github Token (Opetional" required />
+                    <Input {...register('githubToken' ,{ required: true })} placeholder="Github Token (Opetional)"  />
                     <div className='h-4'></div>
-                    <Button  type='submit'> Create Project</Button>
+                    <Button  type='submit' disabled={createProject.isPending}> Create Project</Button>
                 </form>
             </div>
         </div>
