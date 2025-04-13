@@ -18,3 +18,12 @@ model Post {
 
     @@index([name])
 }
+
+ model Project {
+    id String @id @default(uuid())
+    createdAt DateTime @default(now()) 
+    updateAt DateTime @updatedAt
+    name String 
+    githubUrl String 
+    deleteAt DateTime?
+ }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LatestPost } from "~/app/_components/post";
 import { Button } from "~/components/ui/button";
 import { api, HydrateClient } from "~/trpc/server";
+import CreatePage from "./_components/(protected)/create/page";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
@@ -10,6 +11,6 @@ export default async function Home() {
   void api.post.getLatest.prefetch();
 
   return (
-    <Button> Click</Button>
+    <CreatePage></CreatePage>
   );
 }
